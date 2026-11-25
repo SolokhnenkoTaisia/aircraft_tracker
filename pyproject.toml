@@ -1,0 +1,37 @@
+
+[tool.poetry]
+name = "aircraft-tracker"
+version = "0.1.0"
+description = "Aircraft tracking application using external APIs"
+authors = ["SolokhnenkoTaisia"]
+readme = "README.md"
+packages = [{ include = "aircraft_tracker", from = "src" }]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+requests = "^2.34.2"
+python-dotenv = "^1.2.4"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^9.2.0"
+pytest-cov = "^7.1.0"
+flake8 = "^7.5.0"
+black = "^26.10.1"
+isort = "^9.0.2"
+mypy = "^2.4.1"
+
+[tool.black]
+line-length = 88
+target-version = ["py312"]
+
+[tool.isort]
+profile = "black"
+line_length = 88
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
