@@ -88,3 +88,33 @@ def test_compare_altitude_unknown() -> None:
 
     with pytest.raises(ValueError):
         aircraft_one.compare_altitude(aircraft_two)
+
+
+@pytest.mark.parametrize(
+    "invalid_value",
+    [float("nan"), float("inf"), float("-inf")],
+)
+def test_aircraft_rejects_invalid_velocity(invalid_value):
+    with pytest.raises(ValueError):
+        Aircraft(
+            icao24="abc123",
+            callsign="TEST",
+            origin_country="Russia",
+            velocity=invalid_value,
+            baro_altitude=10000.0,
+        )
+
+
+@pytest.mark.parametrize(
+    "invalid_value",
+    [float("nan"), float("inf"), float("-inf")],
+)
+def test_aircraft_rejects_invalid_altitude(invalid_value):
+    with pytest.raises(ValueError):
+        Aircraft(
+            icao24="abc123",
+            callsign="TEST",
+            origin_country="Russia",
+            velocity=200.0,
+            baro_altitude=invalid_value,
+        )
