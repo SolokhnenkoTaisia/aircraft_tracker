@@ -116,19 +116,34 @@ def test_print_aircraft_empty(capsys):
 
     assert "Самолёты не найдены." in output
 
+
 def test_run_console(monkeypatch, capsys):
     from aircraft_tracker import console
 
     states = [
         [
-            "abc123", "TEST1", "USA",
-            123, 123, None, None, 10000.0,
-            False, 250.0,
+            "abc123",
+            "TEST1",
+            "USA",
+            123,
+            123,
+            None,
+            None,
+            10000.0,
+            False,
+            250.0,
         ],
         [
-            "def456", "TEST2", "Germany",
-            123, 123, None, None, 8000.0,
-            False, 230.0,
+            "def456",
+            "TEST2",
+            "Germany",
+            123,
+            123,
+            None,
+            None,
+            8000.0,
+            False,
+            230.0,
         ],
     ]
 
