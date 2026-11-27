@@ -1,3 +1,6 @@
+import math
+
+
 class Aircraft:
     """Class representing an aircraft."""
 
@@ -22,15 +25,20 @@ class Aircraft:
             if (
                 isinstance(velocity, bool)
                 or not isinstance(velocity, (int, float))
+                or not math.isfinite(velocity)
                 or velocity < 0
             ):
-                raise ValueError("Velocity must be a non-negative number or None.")
+                raise ValueError(
+                    "Velocity must be a finite non-negative number or None."
+                )
 
         if baro_altitude is not None:
-            if isinstance(baro_altitude, bool) or not isinstance(
-                baro_altitude, (int, float)
+            if (
+                isinstance(baro_altitude, bool)
+                or not isinstance(baro_altitude, (int, float))
+                or not math.isfinite(baro_altitude)
             ):
-                raise ValueError("Altitude must be a number or None.")
+                raise ValueError("Altitude must be a finite number or None.")
 
         self._icao24 = icao24
         self._callsign = callsign

@@ -45,6 +45,21 @@ def test_get_country_bounds_not_found(
         api.get_country_bounds("UnknownCountry")
 
 
+def test_get_country_bounds_invalid_response(
+    api: AircraftAPI, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    def mock_get(*args: object, **kwargs: object) -> requests.Response:
+        response = requests.Response()
+        response.status_code = 200
+        response._content = b'["unexpected"]'
+        return response
+
+    monkeypatch.setattr(api.session, "get", mock_get)
+
+    with pytest.raises(APIError):
+        api.get_country_bounds("Poland")
+
+
 def test_get_aircraft_success(
     api: AircraftAPI, monkeypatch: pytest.MonkeyPatch
 ) -> None:

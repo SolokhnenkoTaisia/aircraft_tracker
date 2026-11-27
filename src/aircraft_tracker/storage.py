@@ -54,6 +54,18 @@ class JSONSaver(BaseStorage):
         if not all(isinstance(item, dict) for item in data):
             raise StorageError("Invalid aircraft data.")
 
+        required_fields = {
+            "icao24",
+            "callsign",
+            "origin_country",
+            "velocity",
+            "baro_altitude",
+        }
+
+        for item in data:
+            if not required_fields.issubset(item):
+                raise StorageError("Aircraft data is missing required fields.")
+
         return data
 
     def _write_data(self, data: list[dict[str, Any]]) -> None:
@@ -89,16 +101,19 @@ class JSONSaver(BaseStorage):
         """Return stored aircraft, optionally filtered by country."""
         data = self._read_data()
 
-        aircraft_list = [
-            Aircraft(
-                icao24=item["icao24"],
-                callsign=item["callsign"],
-                origin_country=item["origin_country"],
-                velocity=item["velocity"],
-                baro_altitude=item["baro_altitude"],
-            )
-            for item in data
-        ]
+        try:
+            aircraft_list = [
+                Aircraft(
+                    icao24=item["icao24"],
+                    callsign=item["callsign"],
+                    origin_country=item["origin_country"],
+                    velocity=item["velocity"],
+                    baro_altitude=item["baro_altitude"],
+                )
+                for item in data
+            ]
+        except (TypeError, ValueError) as error:
+            raise StorageError("Invalid aircraft data.") from error
 
         if country is not None:
             aircraft_list = [

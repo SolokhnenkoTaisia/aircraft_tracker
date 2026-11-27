@@ -63,6 +63,9 @@ class AircraftAPI(BaseAPI):
         if not isinstance(data, list) or not data:
             raise APIError(f"Country '{country}' was not found.")
 
+        if not isinstance(data[0], dict):
+            raise APIError("Invalid country data received from Nominatim.")
+
         boundingbox = data[0].get("boundingbox")
 
         if not isinstance(boundingbox, list) or len(boundingbox) != 4:

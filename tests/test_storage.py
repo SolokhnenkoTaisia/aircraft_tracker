@@ -92,6 +92,36 @@ def test_json_items_must_be_dicts(storage):
         storage.get_aircraft()
 
 
+def test_json_missing_required_fields(storage):
+    storage._file_path.write_text(
+        '[{"icao24": "abc123"}]',
+        encoding="utf-8",
+    )
+
+    with pytest.raises(StorageError):
+        storage.get_aircraft()
+
+
+def test_json_invalid_aircraft_values(storage):
+    storage._file_path.write_text(
+        json.dumps(
+            [
+                {
+                    "icao24": "abc123",
+                    "callsign": "ABC123",
+                    "origin_country": "Russia",
+                    "velocity": "fast",
+                    "baro_altitude": 10000.0,
+                }
+            ]
+        ),
+        encoding="utf-8",
+    )
+
+    with pytest.raises(StorageError):
+        storage.get_aircraft()
+
+
 def test_saved_data_is_valid_json(storage, aircraft_one):
     storage.add_aircraft(aircraft_one)
 
